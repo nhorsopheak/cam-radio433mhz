@@ -1,0 +1,63 @@
+//Transmiter
+
+#include "VirtualWire.h"
+
+#define elevPin A0
+#define ailePin A1
+#define throPin A2
+#define rudderPin A3
+#define potPin A4
+
+#define clickL 12
+#define clickR 11
+
+struct {
+  byte elevator;
+  byte aileron;
+  byte throttle;
+  byte rudder;
+  byte pot;
+  byte buttonA;
+  byte buttonB;
+  byte buttonC;
+  byte buttonD;
+} DATA;
+
+void setup()
+{
+  vw_setup(2000); // Bits per sec
+  vw_set_tx_pin(2);
+
+  pinMode(clickL,INPUT_PULLUP);
+  pinMode(clickR,INPUT_PULLUP);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  int eleVal = analogRead(elevPin);
+  int aileVal = analogRead(ailePin);
+  int throVal =analogRead(throPin);
+  int rudderVal = analogRead(rudderPin);
+  int potVal =analogRead(potPin);
+  int clickLVal = digitalRead(clickL);
+  int clickRVal =digitalRead(clickR);
+
+  eleVal = map(eleVal,300,700,0,128);
+  aileVal = map(aileVal,300,700,0,128);
+  throVal = map(throVal,300,700,0,128);
+  rudderVal = map(rudderVal,300,700,0,128);
+  potVal = map(potVal,300,700,0,128);
+
+  DATA.elevator = eleVal;
+  DATA.aileron = aileVal;
+  DATA.throttle = throVal;
+  DATA.rudder = rudderVal;
+  DATA.pot = potVal;
+  DATA.buttonA = clickLVal;
+  DATA.buttonB = clickRVal;
+  DATA.buttonC = 0;
+  DATA.buttonD = 0;
+  vw_send((uint8_t*)&DATA, sizeof(DATA));
+  vw_wait_tx();
+}

@@ -1,6 +1,9 @@
 // receiver
 
-#include <VirtualWire.h>
+#include "VirtualWire.h"
+//#include<ServoTimer2.h>
+
+//ServoTimer2 servo;
 
 struct DATA {
   byte elevator;
@@ -22,6 +25,7 @@ void setup()
   vw_setup(2000); // Bits per sec
   vw_set_rx_pin(11);
   vw_rx_start();
+//  servo.attach(4);
 }
 
 void loop()
@@ -41,7 +45,7 @@ void loop()
     Serial.println(DataIn->throttle);
     
     Serial.print("rudder:");
-    Serial.println(DataIn->rudder);
+    Serial.println(DataIn->throttle);
     
     Serial.print("pot:");
     Serial.println(DataIn->pot);
