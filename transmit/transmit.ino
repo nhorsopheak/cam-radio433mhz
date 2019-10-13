@@ -21,8 +21,8 @@ struct {
   uint8_t throttle;
   uint8_t rudder;
   uint8_t pot;
-  byte clickL;
   byte clickR;
+  byte clickL;
   byte buttonA;
   byte buttonB;
   byte buttonC;
