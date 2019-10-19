@@ -23,17 +23,11 @@ ServoTimer2 servo5;
 #define buttonDPin 8
 
 struct DATA {
-  uint8_t elevator;
-  uint8_t aileron;
-  uint8_t throttle;
-  uint8_t rudder;
-  uint8_t pot;
-  byte clickR;
-  byte clickL;
-  byte buttonA;
-  byte buttonB;
-  byte buttonC;
-  byte buttonD;
+  byte elevator;
+  byte aileron;
+  byte throttle;
+  byte rudder;
+  byte pot;
 };
 
 struct DATA *DataIn;
@@ -49,12 +43,6 @@ void setup()
   servo3.attach(throPin);
   servo4.attach(ailePin);
   servo5.attach(elevPin);
-  pinMode(clickLPin,OUTPUT);
-  pinMode(clickRPin,OUTPUT);
-  pinMode(buttonAPin,OUTPUT);
-  pinMode(buttonBPin,OUTPUT);
-  pinMode(buttonCPin,OUTPUT);
-  pinMode(buttonDPin,OUTPUT);
 }
 
 void loop()
@@ -64,20 +52,14 @@ void loop()
   if (vw_get_message(buf, &buflen)) // Non-blocking
   {
     DataIn = (struct DATA*)buf;
-    servo1.write(map(DataIn->pot,0,255,750,2250));
-    servo2.write(map(DataIn->rudder,0,255,750,2250));
-    servo3.write(map(DataIn->throttle,0,255,750,2250));
-    servo4.write(map(DataIn->aileron,0,255,750,2250));
-    servo5.write(map(DataIn->elevator,0,255,750,2250));
+    servo1.write(map(DataIn->pot,0,254,1000,2000));
+    servo2.write(map(DataIn->rudder,0,254,1000,2000));
+    servo3.write(map(DataIn->throttle,0,254,1000,2000));
+    servo4.write(map(DataIn->aileron,0,254,1000,2000));
+    servo5.write(map(DataIn->elevator,0,254,1000,2000));
 
-    digitalWrite(clickLPin,!DataIn->clickL);
-    digitalWrite(clickRPin,!DataIn->clickR);
-    digitalWrite(buttonAPin,!DataIn->buttonA);
-    digitalWrite(buttonBPin,!DataIn->buttonB);
-    digitalWrite(buttonCPin,!DataIn->buttonC);
-    digitalWrite(buttonDPin,!DataIn->buttonD);
-
-
-    Serial.println(n++);
+    Serial.print(DataIn->aileron);
+    Serial.print(" - ");
+    Serial.println(map(DataIn->aileron,0,254,1000,2000));
   }
 }
