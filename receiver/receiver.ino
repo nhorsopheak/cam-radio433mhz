@@ -37,11 +37,11 @@ struct DATA {
 };
 
 struct DATA *DataIn;
-
+int n =0;
 void setup()
 {
   Serial.begin(9600);
-  vw_setup(2000); // Bits per sec
+  vw_setup(5000); // Bits per sec
   vw_set_rx_pin(2);
   vw_rx_start();
   servo1.attach(potPin);
@@ -64,12 +64,11 @@ void loop()
   if (vw_get_message(buf, &buflen)) // Non-blocking
   {
     DataIn = (struct DATA*)buf;
-    servo1.write(map(DataIn->pot,0,127,750,2250));
-    Serial.println(map(DataIn->throttle,0,127,750,2250));
-    servo2.write(map(DataIn->rudder,0,127,750,2250));
-    servo3.write(map(DataIn->throttle,0,127,750,2250));
-    servo4.write(map(DataIn->aileron,0,127,750,2250));
-    servo5.write(map(DataIn->elevator,0,127,750,2250));
+    servo1.write(map(DataIn->pot,0,255,750,2250));
+    servo2.write(map(DataIn->rudder,0,255,750,2250));
+    servo3.write(map(DataIn->throttle,0,255,750,2250));
+    servo4.write(map(DataIn->aileron,0,255,750,2250));
+    servo5.write(map(DataIn->elevator,0,255,750,2250));
 
     digitalWrite(clickLPin,!DataIn->clickL);
     digitalWrite(clickRPin,!DataIn->clickR);
@@ -77,5 +76,8 @@ void loop()
     digitalWrite(buttonBPin,!DataIn->buttonB);
     digitalWrite(buttonCPin,!DataIn->buttonC);
     digitalWrite(buttonDPin,!DataIn->buttonD);
+
+
+    Serial.println(n++);
   }
 }
